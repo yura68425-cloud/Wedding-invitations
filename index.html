@@ -885,66 +885,6 @@
             font-family: 'Cormorant Garamond', serif;
         }
 
-        /* Секция "Расписание" */
-        .timeline {
-            position: relative;
-            padding-left: 25px;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 8px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: var(--secondary);
-        }
-
-        .timeline-item {
-            position: relative;
-            margin-bottom: 30px;
-            padding-bottom: 30px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .timeline-item:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-
-        .timeline-dot {
-            position: absolute;
-            left: -28px;
-            top: 3px;
-            width: 18px;
-            height: 18px;
-            background: var(--accent);
-            border-radius: 50%;
-            border: 3px solid white;
-            box-shadow: 0 0 0 3px var(--secondary);
-        }
-
-        .timeline-time {
-            font-weight: 600;
-            color: var(--accent);
-            font-size: 1.2rem;
-            margin-bottom: 5px;
-        }
-
-        .timeline-event {
-            font-weight: 500;
-            color: var(--primary);
-            margin-bottom: 3px;
-            font-size: 1.1rem;
-        }
-
-        .timeline-desc {
-            color: #666;
-            font-size: 0.95rem;
-        }
-
         /* Секция "Контакты" */
         .contact-options {
             display: grid;
@@ -1439,52 +1379,6 @@
                         Ваш ответ поможет нам лучше организовать праздник
                     </div>
                 </form>
-            </div>
-        </section>
-
-        <!-- Расписание -->
-        <section class="section" id="schedule">
-            <h2 class="section-title">Расписание дня</h2>
-            
-            <div class="detail-card">
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-time">15:30</div>
-                        <div class="timeline-event">Сбор гостей</div>
-                        <div class="timeline-desc">Фуршет, знакомства, фотосессия</div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-time">16:00</div>
-                        <div class="timeline-event">Церемония бракосочетания</div>
-                        <div class="timeline-desc">Торжественная часть в беседке</div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-time">17:00</div>
-                        <div class="timeline-event">Банкет</div>
-                        <div class="timeline-desc">Праздничный ужин в зале ресторана</div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-time">18:30</div>
-                        <div class="timeline-event">Танцы и развлечения</div>
-                        <div class="timeline-desc">Первые танцы молодых, конкурсы</div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-time">21:00</div>
-                        <div class="timeline-event">Сладкий стол</div>
-                        <div class="timeline-desc">Торт и десерты</div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-time">23:00</div>
-                        <div class="timeline-event">Завершение праздника</div>
-                        <div class="timeline-desc">Прощальные традиции</div>
-                    </div>
-                </div>
             </div>
         </section>
 
