@@ -1319,21 +1319,45 @@
             </p>
             
             <div class="rsvp-section">
+                <!-- Сообщение об успешной отправке -->
+                <div id="successMessage" style="display: none; background: #d4edda; color: #155724; 
+                                            padding: 20px; border-radius: 12px; margin-bottom: 25px; 
+                                            text-align: center; border: 1px solid #c3e6cb;">
+                    <i class="fas fa-check-circle" style="font-size: 2rem; margin-bottom: 10px; display: block; color: #28a745;"></i>
+                    <h3 style="color: #155724; margin-bottom: 10px;">Спасибо за ответ!</h3>
+                    <p>Ваш ответ успешно отправлен. Ждем вас на свадьбе!</p>
+                </div>
+                
+                <!-- Сообщение об ошибке -->
+                <div id="errorMessage" style="display: none; background: #f8d7da; color: #721c24; 
+                                            padding: 20px; border-radius: 12px; margin-bottom: 25px; 
+                                            text-align: center; border: 1px solid #f5c6cb;">
+                    <i class="fas fa-exclamation-circle" style="font-size: 2rem; margin-bottom: 10px; display: block; color: #dc3545;"></i>
+                    <h3 style="color: #721c24; margin-bottom: 10px;">Ошибка отправки</h3>
+                    <p>Пожалуйста, попробуйте еще раз или свяжитесь с нами напрямую.</p>
+                </div>
+                
+                <!-- Измененная форма с правильными именами полей -->
                 <form id="guestForm">
+                    <!-- Скрытые поля для Formspree -->
+                    <input type="hidden" name="_subject" value="Свадьба Алексей и Мария - Ответ гостя">
+                    <input type="hidden" name="_language" value="ru">
+                    <input type="hidden" name="_replyto" id="replyto" value="wedding@example.com">
+                    
                     <div class="form-group">
-                        <label class="form-label" for="name">Фамилия и Имя</label>
-                        <input type="text" id="name" class="input-field" placeholder="Иванов Иван" required>
+                        <label class="form-label" for="name">Фамилия и Имя *</label>
+                        <input type="text" id="name" name="guest_name" class="input-field" placeholder="Иванов Иван" required>
                     </div>
                     
                     <div class="form-group">
-                        <label class="form-label">Подтвердите свое присутствие</label>
+                        <label class="form-label">Подтвердите свое присутствие *</label>
                         <div class="radio-group">
                             <div class="radio-option" onclick="selectRadio(this)">
-                                <input type="radio" id="yes" name="attendance" value="yes" class="radio-input" required>
+                                <input type="radio" id="yes" name="attendance" value="Да, с удовольствием приду!" class="radio-input" required>
                                 <label for="yes" style="cursor: pointer; flex: 1;">Да, с удовольствием приду!</label>
                             </div>
                             <div class="radio-option" onclick="selectRadio(this)">
-                                <input type="radio" id="no" name="attendance" value="no" class="radio-input">
+                                <input type="radio" id="no" name="attendance" value="К сожалению, не смогу присутствовать" class="radio-input">
                                 <label for="no" style="cursor: pointer; flex: 1;">К сожалению, не смогу присутствовать</label>
                             </div>
                         </div>
@@ -1343,28 +1367,28 @@
                         <h3 class="drinks-title">Что будете пить? (можно выбрать несколько)</h3>
                         <div class="drinks-grid">
                             <div class="drink-option">
-                                <input type="checkbox" id="wine" name="drinks" value="wine">
+                                <input type="checkbox" id="wine" name="drinks_wine" value="Да">
                                 <label for="wine" class="drink-label">
                                     <i class="fas fa-wine-glass-alt drink-icon"></i>
                                     <span>Вино</span>
                                 </label>
                             </div>
                             <div class="drink-option">
-                                <input type="checkbox" id="champagne" name="drinks" value="champagne">
+                                <input type="checkbox" id="champagne" name="drinks_champagne" value="Да">
                                 <label for="champagne" class="drink-label">
                                     <i class="fas fa-glass-cheers drink-icon"></i>
                                     <span>Шампанское</span>
                                 </label>
                             </div>
                             <div class="drink-option">
-                                <input type="checkbox" id="vodka" name="drinks" value="vodka">
+                                <input type="checkbox" id="vodka" name="drinks_vodka" value="Да">
                                 <label for="vodka" class="drink-label">
                                     <i class="fas fa-cocktail drink-icon"></i>
                                     <span>Водка</span>
                                 </label>
                             </div>
                             <div class="drink-option">
-                                <input type="checkbox" id="cognac" name="drinks" value="cognac">
+                                <input type="checkbox" id="cognac" name="drinks_cognac" value="Да">
                                 <label for="cognac" class="drink-label">
                                     <i class="fas fa-glass-whiskey drink-icon"></i>
                                     <span>Коньяк</span>
@@ -1373,10 +1397,19 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="submit-btn">Отправить ответ</button>
+                    <!-- Дополнительное поле для пожеланий -->
+                    <div class="form-group">
+                        <label class="form-label" for="wishes">Ваши пожелания (необязательно)</label>
+                        <textarea id="wishes" name="guest_wishes" class="input-field" placeholder="Ваши пожелания, комментарии..." rows="3"></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        <span id="btnText">Отправить ответ</span>
+                        <i class="fas fa-paper-plane" style="margin-left: 10px;"></i>
+                    </button>
                     
                     <div class="form-note">
-                        Ваш ответ поможет нам лучше организовать праздник
+                        * Обязательные для заполнения поля. Ответ придет нам на почту.
                     </div>
                 </form>
             </div>
@@ -1456,47 +1489,136 @@
         updateCountdown();
         setInterval(updateCountdown, 1000);
 
+        // Обработка формы с отправкой на Formspree
+        document.getElementById('guestForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const form = this;
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
+            const originalText = btnText.textContent;
+            
+            // Показать состояние загрузки
+            submitBtn.disabled = true;
+            btnText.textContent = 'Отправка...';
+            submitBtn.style.opacity = '0.7';
+            submitBtn.style.cursor = 'wait';
+            
+            // Скрыть предыдущие сообщения
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+            
+            try {
+                // Создаем FormData
+                const formData = new FormData(form);
+                
+                // Форматируем данные в понятную строку
+                const name = formData.get('guest_name') || 'Не указано';
+                const attendance = formData.get('attendance') || 'Не указано';
+                const wishes = formData.get('guest_wishes') || 'Нет пожеланий';
+                
+                // Собираем напитки в строку
+                const drinks = [];
+                if (formData.get('drinks_wine') === 'Да') drinks.push('Вино');
+                if (formData.get('drinks_champagne') === 'Да') drinks.push('Шампанское');
+                if (formData.get('drinks_vodka') === 'Да') drinks.push('Водка');
+                if (formData.get('drinks_cognac') === 'Да') drinks.push('Коньяк');
+                const drinksText = drinks.length > 0 ? drinks.join(', ') : 'Не указано';
+                
+                // Создаем тело письма
+                const emailBody = `
+                    НОВЫЙ ОТВЕТ НА ПРИГЛАШЕНИЕ НА СВАДЬБУ
+                    
+                    Имя гостя: ${name}
+                    Присутствие: ${attendance}
+                    Напитки: ${drinksText}
+                    
+                    Пожелания/комментарии:
+                    ${wishes}
+                    
+                    ---
+                    Ответ отправлен через форму на свадебном сайте.
+                    Дата отправки: ${new Date().toLocaleString('ru-RU')}
+                `;
+                
+                // Используем Formspree для отправки
+                const formspreeFormData = new FormData();
+                formspreeFormData.append('name', name);
+                formspreeFormData.append('attendance', attendance);
+                formspreeFormData.append('drinks', drinksText);
+                formspreeFormData.append('wishes', wishes);
+                formspreeFormData.append('_subject', `Свадьба Алексей и Мария: Ответ от ${name}`);
+                formspreeFormData.append('_replyto', 'wedding@example.com');
+                
+                // Отправляем на Formspree
+                const response = await fetch('https://formspree.io/f/meoyrlnw', {
+                    method: 'POST',
+                    body: formspreeFormData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    // Успешная отправка
+                    document.getElementById('successMessage').style.display = 'block';
+                    
+                    // Сбросить форму
+                    form.reset();
+                    document.querySelectorAll('.radio-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // Прокрутить к сообщению об успехе
+                    setTimeout(() => {
+                        document.getElementById('successMessage').scrollIntoView({ 
+                            behavior: 'smooth',
+                            block: 'center'
+                        });
+                    }, 100);
+                    
+                } else {
+                    throw new Error('Ошибка отправки формы');
+                }
+                
+            } catch (error) {
+                console.error('Formspree error:', error);
+                document.getElementById('errorMessage').style.display = 'block';
+                
+                // Прокрутить к сообщению об ошибке
+                setTimeout(() => {
+                    document.getElementById('errorMessage').scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                }, 100);
+                
+            } finally {
+                // Восстановить кнопку
+                submitBtn.disabled = false;
+                btnText.textContent = originalText;
+                submitBtn.style.opacity = '1';
+                submitBtn.style.cursor = 'pointer';
+                
+                // Автоматически скрыть сообщения через 15 секунд
+                setTimeout(() => {
+                    document.getElementById('successMessage').style.display = 'none';
+                    document.getElementById('errorMessage').style.display = 'none';
+                }, 15000);
+            }
+        });
+
         // Функция для выбора радио-кнопок
         function selectRadio(element) {
             const radio = element.querySelector('input[type="radio"]');
             radio.checked = true;
             
-            // Удаляем класс selected у всех радио-опций
             document.querySelectorAll('.radio-option').forEach(opt => {
                 opt.classList.remove('selected');
             });
             
-            // Добавляем класс selected к выбранной опции
             element.classList.add('selected');
         }
-
-        // Обработка формы
-        document.getElementById('guestForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const name = document.getElementById('name').value;
-            const attendance = document.querySelector('input[name="attendance"]:checked');
-            const drinks = Array.from(document.querySelectorAll('input[name="drinks"]:checked'))
-                               .map(checkbox => checkbox.value);
-            
-            if (!attendance) {
-                alert('Пожалуйста, подтвердите свое присутствие');
-                return;
-            }
-            
-            // В реальном приложении здесь был бы AJAX-запрос на сервер
-            const message = attendance.value === 'yes' 
-                ? `Спасибо, ${name}! Ждем вас на нашей свадьбе! ${drinks.length ? `Ваши напитки: ${drinks.join(', ')}` : ''}`
-                : `Спасибо за ответ, ${name}. Будем скучать!`;
-            
-            alert(message);
-            
-            // Очистка формы
-            this.reset();
-            document.querySelectorAll('.radio-option').forEach(opt => {
-                opt.classList.remove('selected');
-            });
-        });
 
         // Кнопка "Наверх"
         const backToTop = document.getElementById('backToTop');
