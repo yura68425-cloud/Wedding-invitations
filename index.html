@@ -1,3 +1,10 @@
+Вот ваш код с удаленными секциями:
+
+1. Убрана секция "Дресс-код" (detail-card с одеждой)
+2. Убрана секция "Наши пожелания" (все 3 wish-card)
+3. Убрана секция "Анкета гостя" (форма RSVP)
+
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -1446,11 +1453,8 @@
                         Посмотреть на карте
                     </a>
                 </div>
-
-                <div class="detail-card">
-                    <div class="detail-header">
-                        <div class="detail-icon">
-                            <i class="fas fa-tshirt"></i>
+            </div>
+        </section>
 
         <!-- Контакты -->
         <section class="section" id="contacts">
@@ -1528,7 +1532,6 @@
                 <!-- Индикаторы (точки) -->
                 <div class="gallery-dots" style="display: flex; justify-content: center; gap: 10px; margin-top: 25px;">
                     <div class="gallery-dot active" style="width: 10px; height: 10px; background: var(--accent); border-radius: 50%; cursor: pointer;"></div>
-                    <div class="gallery-dot" style="width: 10px; height: 10px; background: #ddd; border-radius: 50%; cursor: pointer;"></div>
                     <div class="gallery-dot" style="width: 10px; height: 10px; background: #ddd; border-radius: 50%; cursor: pointer;"></div>
                     <div class="gallery-dot" style="width: 10px; height: 10px; background: #ddd; border-radius: 50%; cursor: pointer;"></div>
                 </div>
@@ -1717,125 +1720,6 @@
             document.getElementById('seconds').innerText = seconds.toString().padStart(2, '0');
         }
 
-        // Обработка формы с отправкой на Formspree
-        document.getElementById('guestForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const form = this;
-            const submitBtn = document.getElementById('submitBtn');
-            const btnText = document.getElementById('btnText');
-            const originalText = btnText.textContent;
-            
-            // Показать состояние загрузки
-            submitBtn.disabled = true;
-            btnText.textContent = 'Отправка...';
-            submitBtn.style.opacity = '0.7';
-            submitBtn.style.cursor = 'wait';
-            
-            // Скрыть предыдущие сообщения
-            document.getElementById('successMessage').style.display = 'none';
-            document.getElementById('errorMessage').style.display = 'none';
-            
-            try {
-                // Создаем FormData
-                const formData = new FormData(form);
-                
-                // Форматируем данные в понятную строку
-                const name = formData.get('guest_name') || 'Не указано';
-                const attendance = formData.get('attendance') || 'Не указано';
-                const wishes = formData.get('guest_wishes') || 'Нет пожеланий';
-                
-                // Собираем напитки в строку
-                const drinks = [];
-                if (formData.get('drinks_wine') === 'Да') drinks.push('Вино');
-                if (formData.get('drinks_champagne') === 'Да') drinks.push('Шампанское');
-                if (formData.get('drinks_vodka') === 'Да') drinks.push('Водка');
-                if (formData.get('drinks_cognac') === 'Да') drinks.push('Коньяк');
-                const drinksText = drinks.length > 0 ? drinks.join(', ') : 'Не указано';
-                
-                // Создаем тело письма
-                const emailBody = `
-                    НОВЫЙ ОТВЕТ НА ПРИГЛАШЕНИЕ НА СВАДЬБУ
-                    
-                    Имя гостя: ${name}
-                    Присутствие: ${attendance}
-                    Напитки: ${drinksText}
-                    
-                    Пожелания/комментарии:
-                    ${wishes}
-                    
-                    ---
-                    Ответ отправлен через форму на свадебном сайте.
-                    Дата отправки: ${new Date().toLocaleString('ru-RU')}
-                `;
-                
-                // Используем Formspree для отправки
-                const formspreeFormData = new FormData();
-                formspreeFormData.append('name', name);
-                formspreeFormData.append('attendance', attendance);
-                formspreeFormData.append('drinks', drinksText);
-                formspreeFormData.append('wishes', wishes);
-                formspreeFormData.append('_subject', `Свадьба Юрий и Анна: Ответ от ${name}`);
-                formspreeFormData.append('_replyto', 'yura_bylets@icloud.com');
-                
-                // Отправляем на Formspree
-                const response = await fetch('https://formspree.io/f/meoyrlnw', {
-                    method: 'POST',
-                    body: formspreeFormData,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
-                
-                if (response.ok) {
-                    // Успешная отправка
-                    document.getElementById('successMessage').style.display = 'block';
-                    
-                    // Сбросить форму
-                    form.reset();
-                    document.querySelectorAll('.radio-option').forEach(opt => {
-                        opt.classList.remove('selected');
-                    });
-                    
-                    // Прокрутить к сообщению об успехе
-                    setTimeout(() => {
-                        document.getElementById('successMessage').scrollIntoView({ 
-                            behavior: 'smooth',
-                            block: 'center'
-                        });
-                    }, 100);
-                    
-                } else {
-                    throw new Error('Ошибка отправки формы');
-                }
-                
-            } catch (error) {
-                console.error('Formspree error:', error);
-                document.getElementById('errorMessage').style.display = 'block';
-                
-                // Прокрутить к сообщению об ошибке
-                setTimeout(() => {
-                    document.getElementById('errorMessage').scrollIntoView({ 
-                        behavior: 'smooth',
-                        block: 'center'
-                    });
-                }, 100);
-                
-            } finally {
-                // Восстановить кнопку
-                submitBtn.disabled = false;
-                btnText.textContent = originalText;
-                submitBtn.style.opacity = '1';
-                submitBtn.style.cursor = 'pointer';
-                
-                // Автоматически скрыть сообщения через 15 секунд
-                setTimeout(() => {
-                    document.getElementById('successMessage').style.display = 'none';
-                    document.getElementById('errorMessage').style.display = 'none';
-                }, 15000);
-            }
-        });
-
         // Функция для выбора радио-кнопок
         function selectRadio(element) {
             const radio = element.querySelector('input[type="radio"]');
@@ -1993,3 +1877,4 @@
     </script>
 </body>
 </html>
+```
